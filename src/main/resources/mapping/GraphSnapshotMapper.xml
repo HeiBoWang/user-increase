@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jd.user.increase.dao.GraphSnapshotDao">
+    <!--    sql map-->
+    <sql id="BASE_COLUMN_LIST">
+        <![CDATA[
+            id AS id
+			,graph_data AS graphData
+			,graph_snapshot AS graphSnapshot
+			,create_user AS createUser
+			,create_time AS createTime
+        ]]>
+    </sql>
+
+    <!-- 数据库和对象映射关系 -->
+    <resultMap id="resultMap" type="com.jd.user.increase.domain.GraphSnapshot">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="graph_data" property="graphData" jdbcType="VARCHAR"/>
+        <result column="graph_snapshot" property="graphSnapshot" jdbcType="VARCHAR"/>
+        <result column="create_user" property="createUser" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--新增渠道-->
+    <insert id="insert"  parameterType="com.jd.user.increase.domain.GraphSnapshot">
+        insert into ug_graph_snapshot (
+              graph_data,
+              graph_snapshot,
+              create_user,
+              create_time
+        )
+        values (#{graphData},#{graphSnapshot},
+                #{createUser},now()
+               )
+    </insert>
+
+    <!-- 查询列表 -->
+    <select id="queryList" resultType="com.jd.user.increase.domain.GraphSnapshot">
+        select <include refid="BASE_COLUMN_LIST"/> from ug_graph_snapshot ORDER BY id desc
+    </select>
+
+    <!--  根据ID查询一条信息-->
+    <select id="queryById" resultType="com.jd.user.increase.domain.GraphSnapshot">
+        select
+        <include refid="BASE_COLUMN_LIST"/>
+        from ug_graph_snapshot
+        where id = #{id}
+
+    </select>
+
+
+</mapper>
